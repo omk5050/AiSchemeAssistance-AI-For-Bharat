@@ -1,24 +1,22 @@
-const { validateUserInput } = require("../eligibility/validator");
+const validatorModule = require("../eligibility/validator");
+console.log("Validator module loaded:", validatorModule);
+
+const validateUserInput = validatorModule.validateUserInput || validatorModule;
+
 const { loadAllSchemes } = require("../eligibility/rulesLoader");
 const { evaluateAllSchemes } = require("../eligibility/engine");
 
 function evaluateUserEligibility(payload) {
-    // 1. Validate user input
-    const validatedUser = validateUserInput(payload);
+  // 1. Validate input
+  const validatedUser = validateUserInput(payload);
 
-    // 2. Load all scheme rules
-    const schemes = loadAllSchemes();
-    function evaluateUserEligibility(payload) {
-        const validatedUser = validateUserInput(payload);
-        return evaluateAllSchemes(validatedUser, schemes);
-    }
+  // 2. Load scheme rules
+  const schemes = loadAllSchemes();
 
-    // 3. Evaluate eligibility across all schemes
-    const results = evaluateAllSchemes(validatedUser, schemes);
-
-    return results;
+  // 3. Evaluate all schemes    
+  return evaluateAllSchemes(validatedUser, schemes);
 }
 
 module.exports = {
-    evaluateUserEligibility,
+  evaluateUserEligibility,
 };

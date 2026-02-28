@@ -1,0 +1,12 @@
+{
+  "name": "ai-scheme-assistant",
+  "version": "1.0.0",
+  "description": "AI Scheme Eligibility & Explanation Assistant - Maharashtra Edition",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

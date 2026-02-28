@@ -1,0 +1,8 @@
+{
+  "scheme": "Mukhyamantri Yuva Karya Prashikshan Yojana",
+  "state": "maharashtra",
+  "min_age": 18,
+  "max_age": 35,
+  "max_income": 300000,
+  "allowed_occupations": ["student", "unemployed"]
+}

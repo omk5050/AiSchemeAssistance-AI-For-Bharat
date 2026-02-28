@@ -1,0 +1,8 @@
+{
+  "scheme": "Shravan Bal Seva Rajya Nivrutti Vetan Yojana",
+  "state": "maharashtra",
+  "min_age": 65,
+  "max_age": 120,
+  "max_income": 50000,
+  "allowed_occupations": ["unemployed"]
+}

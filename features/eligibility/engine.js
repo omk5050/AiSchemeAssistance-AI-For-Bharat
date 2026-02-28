@@ -4,47 +4,47 @@ function evaluateSingleScheme(user, scheme) {
 
     // 1. State
     if (user.state === scheme.state) {
-        matchedRules.push("State matches");
+        matchedRules.push("state_pass");
     } else {
-        reasons.push("State does not match scheme requirement");
+        reasons.push("state_fail");
     }
 
     // 2. Min Age
     if (user.age >= scheme.min_age) {
-        matchedRules.push(`Age is >= ${scheme.min_age}`);
+        matchedRules.push("min_age_pass");
     } else {
-        reasons.push(`Age must be at least ${scheme.min_age}`);
+        reasons.push("min_age_fail");
     }
 
     // 3. Max Age
     if (user.age <= scheme.max_age) {
-        matchedRules.push(`Age is <= ${scheme.max_age}`);
+        matchedRules.push("max_age_pass");
     } else {
-        reasons.push(`Age must be at most ${scheme.max_age}`);
+        reasons.push("max_age_fail");
     }
 
     // 4. Income
     if (user.income <= scheme.max_income) {
-        matchedRules.push(`Income is <= ${scheme.max_income}`);
+        matchedRules.push("income_pass");
     } else {
-        reasons.push(`Income exceeds maximum limit of ${scheme.max_income}`);
+        reasons.push("income_fail");
     }
 
     // 5. Occupation
     if (scheme.allowed_occupations.includes(user.occupation)) {
-        matchedRules.push("occupation_match");
+        matchedRules.push("occupation_pass");
     } else {
-        reasons.push("occupation_mismatch");
+        reasons.push("occupation_fail");
     }
 
     // 6. Category (if applicable)
     if (scheme.allowed_categories) {
         if (!user.category) {
-            reasons.push("Category is required for this scheme");
+            reasons.push("category_fail");
         } else if (!scheme.allowed_categories.includes(user.category)) {
-            reasons.push("Category not eligible for this scheme");
+            reasons.push("category_fail");
         } else {
-            matchedRules.push("Category allowed");
+            matchedRules.push("category_pass");
         }
     }
 

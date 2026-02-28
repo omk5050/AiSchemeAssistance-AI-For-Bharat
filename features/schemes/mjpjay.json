@@ -1,0 +1,8 @@
+{
+  "scheme": "Mahatma Jyotirao Phule Jan Arogya Yojana",
+  "state": "maharashtra",
+  "min_age": 0,
+  "max_age": 120,
+  "max_income": 300000,
+  "allowed_occupations": ["farmer", "laborer", "unemployed", "student"]
+}

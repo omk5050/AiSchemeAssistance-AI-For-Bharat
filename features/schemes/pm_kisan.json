@@ -1,0 +1,8 @@
+{
+  "scheme": "PM-KISAN",
+  "state": "maharashtra",
+  "min_age": 18,
+  "max_age": 100,
+  "max_income": 1000000,
+  "allowed_occupations": ["farmer"]
+}
