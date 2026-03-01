@@ -35,6 +35,7 @@ occupation_fail: User occupation is not eligible.
 
 category_pass: User category is eligible.
 category_fail: User category is not eligible or required but missing.
+
 -----------------------------------------
 
 USER PROFILE:

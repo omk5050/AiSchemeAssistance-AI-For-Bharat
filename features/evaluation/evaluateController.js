@@ -3,17 +3,17 @@ const { loadAllSchemes } = require("../eligibility/rulesLoader");
 const { evaluateAllSchemes } = require("../eligibility/engine");
 const { generateExplanation } = require("../explanation/aiService");
 
+// Load schemes once at startup (fail-fast if malformed)
+const schemes = loadAllSchemes();
+
 async function evaluateUserEligibility(payload) {
   // 1. Validate input
   const validatedUser = validateUserInput(payload);
 
-  // 2. Load scheme rules
-  const schemes = loadAllSchemes();
-
-  // 3. Evaluate eligibility (deterministic and final)
+  // 2. Evaluate eligibility (deterministic and final)
   const results = evaluateAllSchemes(validatedUser, schemes);
 
-  // 4. Attempt explanation (non-blocking safety)
+  // 3. Attempt explanation (never blocks eligibility)
   let explanation = null;
 
   try {
@@ -22,7 +22,6 @@ async function evaluateUserEligibility(payload) {
     explanation = null;
   }
 
-  // 5. Return response safely
   if (explanation) {
     return {
       results,

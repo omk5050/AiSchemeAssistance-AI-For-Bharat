@@ -1,3 +1,7 @@
+require("dotenv").config();
+
+console.log("KEY EXISTS:", !!process.env.GEMINI_API_KEY);
+
 const express = require("express");
 const { evaluateUserEligibility } = require("./features/evaluation/evaluateController");
 
@@ -11,7 +15,6 @@ app.post("/evaluate", async (req, res) => {
     const response = await evaluateUserEligibility(req.body);
     return res.json(response);
   } catch (error) {
-    // Development-safe logging
     if (process.env.NODE_ENV !== "production") {
       console.error("ERROR OCCURRED:");
       console.error(error);
@@ -33,4 +36,8 @@ app.post("/evaluate", async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+});
+
+app.get("/", (req, res) => {
+  res.json({ status: "API running" });
 });
