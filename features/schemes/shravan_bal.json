@@ -3,6 +3,6 @@
   "state": "maharashtra",
   "min_age": 65,
   "max_age": 120,
-  "max_income": 50000,
+  "max_income": 21000,
   "allowed_occupations": ["unemployed"]
 }

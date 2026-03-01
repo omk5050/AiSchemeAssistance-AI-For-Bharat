@@ -5,5 +5,5 @@
   "max_age": 30,
   "max_income": 800000,
   "allowed_occupations": ["student"],
-  "allowed_categories": ["general", "obc", "sc", "st"]
+  "allowed_categories": ["general"]
 }

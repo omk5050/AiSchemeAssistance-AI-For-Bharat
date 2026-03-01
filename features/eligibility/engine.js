@@ -24,10 +24,14 @@ function evaluateSingleScheme(user, scheme) {
     }
 
     // 4. Income
-    if (user.income <= scheme.max_income) {
-        matchedRules.push("income_pass");
-    } else {
-        reasons.push("income_fail");
+    if (scheme.max_income !== undefined) {
+
+        if (user.income <= scheme.max_income) {
+            matchedRules.push("income_pass");
+        }
+        else {
+            reasons.push("income_fail");
+        }
     }
 
     // 5. Occupation
