@@ -4,11 +4,13 @@
   "description": "AI Scheme Eligibility & Explanation Assistant - Maharashtra Edition",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "lambda": "node lambda.js"
   },
   "dependencies": {
     "dotenv": "^17.3.1",
     "express": "^4.19.2",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "serverless-http": "^4.0.0"
   }
 }

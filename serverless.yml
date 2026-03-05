@@ -1,0 +1,18 @@
+service: ai-scheme-assistant
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-south-1
+  timeout: 15
+
+  environment:
+    GEMINI_API_KEY: ${env:GEMINI_API_KEY}
+
+functions:
+  app:
+    handler: lambda.handler
+    events:
+      - httpApi:
+          path: /evaluate
+          method: post
