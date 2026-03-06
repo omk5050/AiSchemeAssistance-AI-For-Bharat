@@ -9,6 +9,15 @@ provider:
   environment:
     GEMINI_API_KEY: ${env:GEMINI_API_KEY}
 
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+          Resource:
+            - arn:aws:s3:::ai-scheme-rules-maharashtra-ai-for-bharat/*
+
 functions:
   app:
     handler: lambda.handler

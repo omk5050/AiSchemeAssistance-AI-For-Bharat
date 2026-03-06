@@ -3,37 +3,48 @@ const { loadAllSchemes } = require("../eligibility/rulesLoader");
 const { evaluateAllSchemes } = require("../eligibility/engine");
 const { generateExplanation } = require("../explanation/aiService");
 
-// Load schemes once at startup (fail-fast if malformed)
-const schemes = loadAllSchemes();
+let cachedSchemes = null;
+
+async function getSchemes() {
+  if (cachedSchemes) {
+    return cachedSchemes;
+  }
+
+  console.log("Loading schemes from S3 (cold start)");
+
+  cachedSchemes = await loadAllSchemes();
+
+  return cachedSchemes;
+}
 
 async function evaluateUserEligibility(payload) {
-  // 1. Validate input
+
   const validatedUser = validateUserInput(payload);
 
-  // 2. Evaluate eligibility (deterministic and final)
+  const schemes = await getSchemes();
+
   const results = evaluateAllSchemes(validatedUser, schemes);
 
-  // 3. Attempt explanation (never blocks eligibility)
   let explanation = null;
 
   try {
     explanation = await generateExplanation(validatedUser, results);
-  } catch {
-    explanation = null;
+  } catch (err) {
+    console.error("AI explanation error:", err);
   }
 
   if (explanation) {
     return {
       results,
-      explanation,
+      explanation
     };
   }
 
   return {
-    results,
+    results
   };
 }
 
 module.exports = {
-  evaluateUserEligibility,
+  evaluateUserEligibility
 };

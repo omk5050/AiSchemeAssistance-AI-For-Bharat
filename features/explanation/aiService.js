@@ -10,7 +10,9 @@ async function generateExplanation(userProfile, eligibilityResults) {
   const prompt = buildExplanationPrompt(userProfile, eligibilityResults);
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
+
+  // Increased timeout (Gemini often needs >8s)
+  const timeout = setTimeout(() => controller.abort(), 20000);
 
   try {
     const response = await fetch(
@@ -39,15 +41,17 @@ async function generateExplanation(userProfile, eligibilityResults) {
 
     const data = await response.json();
 
-    const text =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (typeof text !== "string") return null;
 
     const trimmed = text.trim();
+
+    // safety cap
     if (trimmed.length > 3000) return null;
 
     return trimmed;
+
   } catch (error) {
     console.error("Gemini request failed:", error.message);
     return null;
