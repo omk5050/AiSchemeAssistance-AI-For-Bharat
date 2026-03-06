@@ -15,8 +15,15 @@ provider:
         - Effect: Allow
           Action:
             - s3:GetObject
+            - s3:ListBucket
           Resource:
+            - arn:aws:s3:::ai-scheme-rules-maharashtra-ai-for-bharat
             - arn:aws:s3:::ai-scheme-rules-maharashtra-ai-for-bharat/*
+
+        - Effect: Allow
+          Action:
+            - bedrock:InvokeModel
+          Resource: "*"
 
 functions:
   app:
