@@ -10,10 +10,23 @@ const app = express();
 app.use(express.json());
 
 app.post("/evaluate", async (req, res) => {
+
   try {
+
     const response = await evaluateUserEligibility(req.body);
-    return res.json(response);
+
+    // ensure explanation always exists
+    const resultPayload = {
+      results: response.results || [],
+      explanation: response.explanation || ""
+    };
+
+    return res.json(resultPayload);
+
   } catch (error) {
+
+    console.error("API error:", error);
+
     if (error && error.type) {
       return res.status(400).json({
         type: error.type,
@@ -26,6 +39,7 @@ app.post("/evaluate", async (req, res) => {
       message: "Unexpected server error",
     });
   }
+
 });
 
 module.exports.handler = serverless(app);

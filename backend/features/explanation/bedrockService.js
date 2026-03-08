@@ -2,7 +2,7 @@ const { BedrockRuntimeClient, InvokeModelCommand } = require("@aws-sdk/client-be
 const { buildExplanationPrompt } = require("./promptTemplate");
 
 const client = new BedrockRuntimeClient({
-  region: "ap-south-1"
+  region: "us-east-1"
 });
 
 async function generateBedrockExplanation(userProfile, eligibilityResults) {
@@ -10,29 +10,38 @@ async function generateBedrockExplanation(userProfile, eligibilityResults) {
   const prompt = buildExplanationPrompt(userProfile, eligibilityResults);
 
   const body = JSON.stringify({
-    anthropic_version: "bedrock-2023-05-31",
-    max_tokens: 500,
-    temperature: 0.2,
-    messages: [
-      {
-        role: "user",
-        content: prompt
-      }
-    ]
+    inputText: prompt,
+    textGenerationConfig: {
+      maxTokenCount: 200,
+      temperature: 0.2,
+      topP: 0.9
+    }
   });
 
-  const command = new InvokeModelCommand({
-    modelId: "anthropic.claude-3-haiku-20240307-v1:0",
-    body,
-    contentType: "application/json",
-    accept: "application/json"
-  });
+  try {
 
-  const response = await client.send(command);
+    const command = new InvokeModelCommand({
+      modelId: "amazon.titan-text-express-v1",
+      body,
+      contentType: "application/json",
+      accept: "application/json"
+    });
 
-  const parsed = JSON.parse(Buffer.from(response.body).toString());
+    const response = await client.send(command);
 
-  return parsed?.content?.[0]?.text || null;
+    const parsed = JSON.parse(Buffer.from(response.body).toString());
+
+    const text = parsed?.results?.[0]?.outputText;
+
+    return text || null;
+
+  } catch (error) {
+
+    console.error("Bedrock error:", error);
+
+    return null;
+
+  }
 }
 
 module.exports = {

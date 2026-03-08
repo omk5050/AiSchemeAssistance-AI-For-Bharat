@@ -8,6 +8,16 @@ provider:
   region: ap-south-1
   timeout: 15
 
+  httpApi:
+    cors:
+      allowedOrigins:
+        - "*"
+      allowedHeaders:
+        - Content-Type
+      allowedMethods:
+        - POST
+        - OPTIONS
+
   environment:
     GEMINI_API_KEY: ${env:GEMINI_API_KEY}
 

@@ -3,33 +3,44 @@ const { buildExplanationPrompt } = require("./promptTemplate");
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
-async function generateExplanation(userProfile, eligibilityResults) {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) return null;
+async function generateExplanation(userProfile, eligibilityResults, question = "") {
 
-  const prompt = buildExplanationPrompt(userProfile, eligibilityResults);
+  const apiKey = process.env.GEMINI_API_KEY;
+
+  if (!apiKey) {
+    console.error("Missing GEMINI_API_KEY");
+    return null;
+  }
+
+  const prompt =
+    buildExplanationPrompt(userProfile, eligibilityResults) +
+    `
+
+User question:
+${question}
+
+Answer the user's question clearly using the eligibility results above.`;
 
   const controller = new AbortController();
-
-  // Increased timeout (Gemini often needs >8s)
   const timeout = setTimeout(() => controller.abort(), 20000);
 
   try {
+
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           contents: [
             {
-              parts: [{ text: prompt }],
-            },
-          ],
+              parts: [{ text: prompt }]
+            }
+          ]
         }),
-        signal: controller.signal,
+        signal: controller.signal
       }
     );
 
@@ -41,25 +52,30 @@ async function generateExplanation(userProfile, eligibilityResults) {
 
     const data = await response.json();
 
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    let text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-    if (typeof text !== "string") return null;
+    if (!text || typeof text !== "string") return null;
 
-    const trimmed = text.trim();
+    const cleaned = text
+      .trim()
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
 
-    // safety cap
-    if (trimmed.length > 3000) return null;
-
-    return trimmed;
+    return cleaned.slice(0, 3000);
 
   } catch (error) {
+
     console.error("Gemini request failed:", error.message);
     return null;
+
   } finally {
+
     clearTimeout(timeout);
+
   }
 }
 
 module.exports = {
-  generateExplanation,
+  generateExplanation
 };
