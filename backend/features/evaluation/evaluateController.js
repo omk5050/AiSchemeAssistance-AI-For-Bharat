@@ -54,8 +54,9 @@ async function evaluateUserEligibility(payload) {
   // -------- FINAL FALLBACK --------
   if (!explanation) {
 
-    explanation =
-      "Eligibility was evaluated using official scheme rules. Some schemes may not apply because age, income, occupation, or category requirements were not satisfied.";
+    explanation = payload.question
+      ? "I am currently experiencing high load or connection issues to my AI services. Please try again later. Alternatively, you can refer to the official scheme guidelines on their respective websites."
+      : "Eligibility was evaluated using official deterministic scheme rules. Some schemes may not apply because age, income, occupation, or category requirements were not satisfied. AI summarization is currently unavailable.";
 
     model = "Rule Engine Fallback";
 

@@ -27,7 +27,7 @@ Answer the user's question clearly using the eligibility results above.`;
   try {
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: {
@@ -46,7 +46,7 @@ Answer the user's question clearly using the eligibility results above.`;
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("Gemini API error:", response.status, errorText);
+      console.error("Gemini API HTTP error:", response.status, errorText);
       return null;
     }
 

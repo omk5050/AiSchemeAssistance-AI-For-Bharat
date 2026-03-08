@@ -319,9 +319,7 @@ return ( <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-5xl 
 
   </div>
 
-  {hasSubmitted && !selectedScheme && (
-    <Chatbot profile={profile} results={results}/>
-  )}
+  <Chatbot profile={hasSubmitted ? profile : {}} results={hasSubmitted ? results : []} />
 
 </div>
 

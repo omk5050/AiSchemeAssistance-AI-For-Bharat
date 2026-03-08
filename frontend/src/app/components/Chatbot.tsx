@@ -38,6 +38,16 @@ export function Chatbot({ profile, results }: any) {
 
     try {
 
+      const payload: any = {
+        state: "maharashtra",
+        question: userMessage
+      }
+
+      if (profile?.age !== undefined) payload.age = profile.age;
+      if (profile?.income !== undefined) payload.income = profile.income;
+      if (profile?.occupation) payload.occupation = profile.occupation.toLowerCase();
+      if (profile?.category) payload.category = profile.category.toLowerCase();
+
       const response = await fetch(
         "https://w7le5stpkl.execute-api.ap-south-1.amazonaws.com/evaluate",
         {
@@ -45,14 +55,7 @@ export function Chatbot({ profile, results }: any) {
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({
-            age: profile.age,
-            income: profile.income,
-            occupation: profile.occupation?.toLowerCase(),
-            category: profile.category?.toLowerCase(),
-            state: "maharashtra",
-            question: userMessage
-          })
+          body: JSON.stringify(payload)
         }
       )
 
@@ -109,10 +112,11 @@ export function Chatbot({ profile, results }: any) {
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-8 right-8 z-50 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-2xl"
+            whileHover={{ scale: 1.1 }}
+            className="fixed bottom-8 right-8 z-50 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-2xl flex items-center justify-center ring-4 ring-blue-600/30 animate-pulse"
           >
 
-            <MessageCircle className="h-7 w-7" />
+            <MessageCircle className="h-8 w-8" />
 
           </motion.button>
 
