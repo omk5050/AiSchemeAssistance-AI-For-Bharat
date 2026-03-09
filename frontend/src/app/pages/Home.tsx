@@ -17,7 +17,7 @@ const BACKGROUND_IMAGES = [
 export function Home() {
   const { t, language } = useI18n()
   const containerRef = useRef<HTMLDivElement>(null)
-  
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
@@ -31,7 +31,7 @@ export function Home() {
       transition: { staggerChildren: 0.15 }
     }
   }
-  
+
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -39,7 +39,7 @@ export function Home() {
 
   return (
     <div ref={containerRef} className="relative min-h-screen bg-gray-900">
-      
+
       {/* Scroll-based Background Layers */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         {BACKGROUND_IMAGES.map((img, index) => {
@@ -48,20 +48,20 @@ export function Home() {
           const fadeInEnd = index * 0.2
           const fadeOutStart = (index + 0.5) * 0.2
           const end = Math.min(1, (index + 1.5) * 0.2)
-          
+
           const opacity = useTransform(
             scrollYProgress,
             [start, fadeInEnd, fadeOutStart, end],
             [index === 0 ? 1 : 0, 1, 1, index === BACKGROUND_IMAGES.length - 1 ? 1 : 0]
           )
-          
+
           const scale = useTransform(scrollYProgress, [0, 1], [1.05, 1])
 
           return (
             <motion.div
               key={index}
               className="absolute inset-0 bg-cover bg-center"
-              style={{ 
+              style={{
                 backgroundImage: `url(${img})`,
                 opacity,
                 scale
@@ -75,10 +75,10 @@ export function Home() {
       </div>
 
       <div className="relative z-10 text-white flex flex-col gap-24 lg:gap-32 pb-32">
-        
+
         {/* Immersive Introduction Layout */}
         <section className="min-h-[85vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-20">
-          <motion.div 
+          <motion.div
             className="container mx-auto max-w-5xl text-center flex flex-col items-center"
             initial="hidden"
             animate="visible"
@@ -89,13 +89,13 @@ export function Home() {
                 Empowering Citizens
               </Badge>
             </motion.div>
-            <motion.h1 
+            <motion.h1
               variants={itemVariants}
               className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-8 leading-[1.1] text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-gray-400"
             >
               {t.home.title}
             </motion.h1>
-            <motion.p 
+            <motion.p
               variants={itemVariants}
               className="text-xl md:text-2xl text-gray-300 max-w-3xl mb-12 leading-relaxed font-light"
             >
@@ -117,7 +117,7 @@ export function Home() {
         </section>
 
         {/* Credibility Strip */}
-        <motion.section 
+        <motion.section
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
@@ -144,7 +144,7 @@ export function Home() {
         </motion.section>
 
         {/* About Section */}
-        <motion.section 
+        <motion.section
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
@@ -154,7 +154,7 @@ export function Home() {
           <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 lg:p-12 overflow-hidden relative">
             <div className="absolute top-0 right-0 p-32 bg-blue-600/10 blur-[100px] rounded-full"></div>
             <div className="absolute bottom-0 left-0 p-32 bg-indigo-600/10 blur-[100px] rounded-full"></div>
-            
+
             <div className="grid lg:grid-cols-2 gap-12 items-center relative z-10">
               <div className="space-y-8">
                 <motion.div variants={itemVariants}>
@@ -195,7 +195,7 @@ export function Home() {
         </motion.section>
 
         {/* Live Demo Placeholder */}
-        <motion.section 
+        <motion.section
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
@@ -206,18 +206,20 @@ export function Home() {
             <h2 className="text-3xl font-bold mb-4">{t.home.demoTitle}</h2>
             <p className="text-xl text-gray-400 font-light">{t.home.demoDesc}</p>
           </motion.div>
-          <motion.div 
+          <motion.div
             variants={itemVariants}
-            className="w-full aspect-video bg-gray-800/50 backdrop-blur-md rounded-2xl border-2 border-dashed border-gray-600 flex flex-col items-center justify-center gap-4 hover:bg-gray-800/80 transition-colors group cursor-pointer"
-            onClick={() => window.location.href = '/checker'}
+            className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-xl"
           >
-            <PlayCircle className="h-16 w-16 text-gray-500 group-hover:text-white transition-transform group-hover:scale-110" />
-            <p className="text-gray-400 font-semibold uppercase tracking-widest text-sm group-hover:text-gray-300">Click to start live interactive demo</p>
+            <iframe
+              src="https://drive.google.com/file/d/17leSqDnD3t7YgCjpmX8254FIKvXvkwmc/view?usp=sharing"
+              className="w-full h-full"
+              allow="autoplay"
+            />
           </motion.div>
         </motion.section>
 
         {/* Scheme Preview */}
-        <motion.section 
+        <motion.section
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
@@ -235,7 +237,7 @@ export function Home() {
               <motion.div variants={itemVariants} key={scheme.id} className="group flex flex-col sm:flex-row justify-between items-start sm:items-center p-6 border border-white/10 bg-white/5 rounded-xl hover:border-blue-500/50 hover:bg-blue-500/10 transition-all duration-300">
                 <div className="mb-4 sm:mb-0 flex items-center gap-4">
                   <div className="p-3 bg-white/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
-                     <scheme.icon className="h-6 w-6 text-gray-300 group-hover:text-blue-300" />
+                    <scheme.icon className="h-6 w-6 text-gray-300 group-hover:text-blue-300" />
                   </div>
                   <div>
                     <h4 className="text-xl font-bold text-white group-hover:text-blue-300 mb-1 transition-colors">{scheme.name[language]}</h4>
