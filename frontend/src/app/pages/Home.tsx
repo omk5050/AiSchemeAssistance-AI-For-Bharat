@@ -211,7 +211,7 @@ export function Home() {
             className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-xl"
           >
             <iframe
-              src="https://drive.google.com/file/d/17leSqDnD3t7YgCjpmX8254FIKvXvkwmc/view?usp=sharing"
+              src="https://youtu.be/futcbwU18AA"
               className="w-full h-full"
               allow="autoplay"
             />
